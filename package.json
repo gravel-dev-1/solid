@@ -1,5 +1,5 @@
 {
-  "name": "bare",
+  "name": "solid",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,9 +8,13 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },
+  "dependencies": {
+    "solid-js": "^1.9.12"
+  },
   "devDependencies": {
     "@types/node": "^25.5.2",
     "typescript": "~6.0.2",
-    "vite": "^8.0.5"
+    "vite": "^8.0.5",
+    "vite-plugin-solid": "^2.11.11"
   }
 }
