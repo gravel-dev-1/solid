@@ -13,6 +13,8 @@
   },
   "devDependencies": {
     "@types/node": "^25.5.2",
+    "@tanstack/router-plugin": "^1.167.4",
+    "@tanstack/solid-router": "^1.161.1",
     "typescript": "~6.0.2",
     "vite": "^8.0.5",
     "vite-plugin-solid": "^2.11.11"

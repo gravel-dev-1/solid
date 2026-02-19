@@ -1,10 +1,14 @@
+import { createFileRoute, Link } from "@tanstack/solid-router";
 import { createSignal, onMount } from "solid-js";
-import solidLogo from "./assets/solid.svg";
-import viteLogo from "./assets/vite.svg";
-import heroImg from "./assets/hero.png";
-import "./App.css";
+import heroImg from "../assets/hero.png";
+import solidLogo from "../assets/solid.svg";
+import viteLogo from "/vite.svg";
+import tanstackLogo from "../assets/tanstack.png";
+import "./index.css";
 
-function App() {
+export const Route = createFileRoute("/")({ component: RouteComponent });
+
+function RouteComponent() {
   const [count, setCount] = createSignal(0);
   const [health, setHealth] = createSignal();
 
@@ -22,6 +26,7 @@ function App() {
           <img src={heroImg} class="base" width="170" height="179" alt="" />
           <img src={solidLogo} class="framework" alt="Solid logo" />
           <img src={viteLogo} class="vite" alt="Vite logo" />
+          <img src={tanstackLogo} class="vite" alt="Tanstack logo" />
         </div>
         <div>
           <h1>Get started</h1>
@@ -35,6 +40,9 @@ function App() {
         <div>
           API STATUS:
           <code>{JSON.stringify(health())}</code>
+        </div>
+        <div>
+          You can now visit <Link to="/about">/about</Link>
         </div>
       </section>
 
@@ -110,5 +118,3 @@ function App() {
     </>
   );
 }
-
-export default App;
