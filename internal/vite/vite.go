@@ -30,16 +30,15 @@ const (
 
 func Load() (err error) {
 	once.Do(func() {
-		if !env.IsDev() {
-			FS = os.DirFS("internal/vite/dev")
-		} else {
+		FS, err = fs.Sub(productionFS, "build")
+		if env.IsDev() {
 			cmd := exec.Command(string(env.Getenv(JSRuntimeKey, JSRuntimeNode)), "node_modules/vite/bin/vite", "--host")
 			cmd.Stdout = os.Stdout
 			cmd.Stderr = os.Stderr
 			if err := cmd.Start(); err != nil {
 				log.Println(err)
 			}
-			FS, err = fs.Sub(productionFS, "build")
+			FS = os.DirFS("internal/vite/dev")
 		}
 	})
 

@@ -1,3 +1,4 @@
+import path from "path";
 import { defineConfig, loadEnv } from "vite";
 
 export default defineConfig(({ mode }) => {
@@ -6,7 +7,14 @@ export default defineConfig(({ mode }) => {
   return {
     build: { outDir: "internal/vite/build" },
     clearScreen: false,
+    resolve: {
+      alias: {
+        "@": path.resolve("src"),
+      },
+    },
     server: {
+      port: 5173,
+      origin: "http://localhost:5173",
       proxy: { "/api": { target: env.VITE_API_URL, changeOrigin: true } },
     },
   };

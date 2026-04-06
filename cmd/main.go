@@ -24,6 +24,7 @@ func main() {
 
 	if err != nil {
 		log.Fatalln(err)
+		return
 	}
 
 	app := fiber.New()
