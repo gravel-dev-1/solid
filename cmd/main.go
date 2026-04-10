@@ -49,7 +49,6 @@ func main() {
 	<-ctx.Done()
 
 	err = bootstrap.Run(
-		app.Shutdown,
 		func() (err error) { return app.ShutdownWithContext(ctx) },
 	)
 
