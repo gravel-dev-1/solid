@@ -6,18 +6,17 @@ import (
 	"os"
 	"os/signal"
 
-	"gbfw/internal/bootstrap"
-	"gbfw/internal/env"
-	"gbfw/internal/handlers"
-	"gbfw/internal/vite"
+	"gbfw/internal/http/routes"
+	"gbfw/internal/resources"
+	"gbfw/internal/resources/env"
+	"gbfw/internal/resources/vite"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/logger"
-	"github.com/gofiber/fiber/v3/middleware/static"
 )
 
 func main() {
-	err := bootstrap.Run(
+	err := resources.Run(
 		env.Load,
 		vite.Load,
 	)
@@ -29,13 +28,7 @@ func main() {
 
 	app := fiber.New()
 	app.Use(logger.New())
-
-	api := app.Group("/api")
-	api.Get("/health", handlers.Health)
-	api.Use(func(c fiber.Ctx) error { return c.SendStatus(fiber.StatusNotFound) })
-
-	app.Use(static.New("", static.Config{FS: vite.FS}))
-	app.Use(func(c fiber.Ctx) error { return c.SendFile("/index.html", fiber.SendFile{FS: vite.FS}) })
+	routes.Routes(app)
 
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
 	defer stop()
@@ -48,7 +41,7 @@ func main() {
 
 	<-ctx.Done()
 
-	err = bootstrap.Run(
+	err = resources.Run(
 		func() (err error) { return app.ShutdownWithContext(ctx) },
 	)
 

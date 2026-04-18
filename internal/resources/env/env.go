@@ -46,6 +46,7 @@ func Load() (err error) {
 	})
 	return err
 }
+
 func Get[T ~string](key T, defaultValue ...T) T {
 	var val string
 
