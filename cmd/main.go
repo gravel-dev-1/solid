@@ -7,26 +7,26 @@ import (
 	"os/signal"
 
 	"gbfw/internal/http/routes"
-	"gbfw/internal/resources"
-	"gbfw/internal/resources/env"
-	"gbfw/internal/resources/vite"
+	"gbfw/internal/services/env"
+	"gbfw/internal/services/vite"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/logger"
 )
 
+type Validator func(any) error
+
+func (fn Validator) Validate(out any) error { return fn(out) }
+
 func main() {
-	err := resources.Run(
-		env.Load,
-		vite.Load,
-	)
-
-	if err != nil {
-		log.Fatalln(err)
-		return
-	}
-
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		Services: []fiber.Service{
+			&env.Service{},
+			&vite.Service{},
+		},
+		StructValidator: Validator(validator.New().Struct),
+	})
 	app.Use(logger.New())
 	routes.Routes(app)
 
@@ -40,12 +40,4 @@ func main() {
 	}()
 
 	<-ctx.Done()
-
-	err = resources.Run(
-		func() (err error) { return app.ShutdownWithContext(ctx) },
-	)
-
-	if err != nil {
-		log.Fatalln(err)
-	}
 }
