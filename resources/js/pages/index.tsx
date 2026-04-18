@@ -1,10 +1,11 @@
 import { createSignal, onMount } from "solid-js";
-import solidLogo from "./assets/solid.svg";
-import viteLogo from "./assets/vite.svg";
-import heroImg from "./assets/hero.png";
-import "./App.css";
+import solidLogo from "../../assets/solid.svg";
+import viteLogo from "../../assets/vite.svg";
+import heroImg from "../../assets/hero.png";
+import Link from "@/inertia/solid-js/Link";
+// import { Title } from "@solidjs/meta";
 
-function App() {
+function App(props: unknown) {
   const [count, setCount] = createSignal(0);
   const [health, setHealth] = createSignal();
 
@@ -17,6 +18,7 @@ function App() {
 
   return (
     <>
+      {/* <Title>Welcome</Title> */}
       <section id="center">
         <div class="hero">
           <img src={heroImg} class="base" width="170" height="179" alt="" />
@@ -26,7 +28,8 @@ function App() {
         <div>
           <h1>Get started</h1>
           <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
+            Edit <code>resources/js/pages/index.tsx</code> and save to test{" "}
+            <code>HMR</code>
           </p>
         </div>
         <button class="counter" onClick={() => setCount((count) => count + 1)}>
@@ -35,6 +38,16 @@ function App() {
         <div>
           API STATUS:
           <code>{JSON.stringify(health())}</code>
+        </div>
+        <div>
+          Inertia SolidJS Props from server:
+          <code>{JSON.stringify(props)}</code>
+        </div>
+        <div>
+          You can now visit:{" "}
+          <Link href="/about">
+            <code>/about</code>
+          </Link>
         </div>
       </section>
 

@@ -3,16 +3,19 @@ package main
 import (
 	"context"
 	"log"
+	"net/http"
 	"os/signal"
 	"syscall"
 
 	"gravel/internal/http/routes"
 	"gravel/internal/services/env"
+	"gravel/internal/services/inertia"
 	"gravel/internal/services/vite"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/logger"
+	"github.com/gofiber/template/html/v3"
 )
 
 type Validator func(any) error
@@ -25,6 +28,7 @@ func main() {
 			&env.Service{},
 			&vite.Service{},
 		},
+		Views:           html.NewFileSystem(http.FS(inertia.FS), ".go.html"),
 		StructValidator: Validator(validator.New().Struct),
 	})
 	app.Use(logger.New())

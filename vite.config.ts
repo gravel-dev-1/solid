@@ -6,13 +6,19 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, import.meta.dirname);
   const port = 5173;
   return {
-    build: { outDir: "internal/services/vite/build" },
-    clearScreen: false,
-    resolve: {
-      alias: {
-        "@": path.resolve(import.meta.dirname, "src"),
+    build: {
+      outDir: "internal/services/vite/build",
+      manifest: true,
+      rolldownOptions: {
+        input: "resources/js/app.js",
       },
     },
+    resolve: {
+      alias: {
+        "@": path.resolve(import.meta.dirname, "resources/js"),
+      },
+    },
+    clearScreen: false,
     server: {
       port,
       origin: `http://localhost:${port}`,
